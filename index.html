@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <link rel="stylesheet" href="./assets/style.css">
-</head>
-
-<body>
-  <div id="app">
-    <div class="product-display">
-      <div class="product-container">
-        <div class="product-image">
-          <img :src="image" alt="img-product">
-        </div>
-        <div class="product-info">
-          <h1>T-Shirt</h1>
-          <p>In Stock</p>
+  <body>
+    <div id="app">
+      <input type="number" :value="inStock" v-model="inStock">
+      {{ inStock }}
+      <div class="product-display">
+        <div class="product-container">
+          <div class="product-image">
+            <img :src="image" alt="img-product" />
+          </div>
+          <div class="product-info">
+            <h1>{{ product_title }}</h1>
+            <p v-if="inStock>10">In Stock</p>
+            <p v-else-if="inStock <10 && inStock>=1">Almost of Stock</p>
+            <p v-else>Out of Stock</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <script>
-    const { createApp, ref } = Vue;
+    <script>
+      const { createApp, ref } = Vue;
 
-    createApp({
-      setup() {
-        const message = ref('Hello Vue!')
-        return {
-          message,
-          image: ref("./assets/images/tShirtBlue.png")
-        };
-      }
-    }).mount("#app");
-  </script>
-</body>
-
+      createApp({
+        setup() {
+          const message = ref("Hello Vue!");
+          return {
+            message,
+            product_title: ref("Skibidi"),
+            image: ref("./assets/images/tShirtBlue.png"),
+            inStock: ref(100),
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
 </html>

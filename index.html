@@ -10,7 +10,8 @@
 
   <body>
     <div id="app">
-      <input type="number" :value="inStock" v-model="inStock">
+      <div class="cart">Cart: {{cart}}</div>
+      <input type="number" :value="inStock" v-model="inStock" />
       {{ inStock }}
       <div class="product-display">
         <div class="product-container">
@@ -22,6 +23,24 @@
             <p v-if="inStock>10">In Stock</p>
             <p v-else-if="inStock <10 && inStock>=1">Almost of Stock</p>
             <p v-else>Out of Stock</p>
+            <ul>
+              <li v-for="detail in details">{{detail}}</li>
+            </ul>
+            <div
+              v-for="variant in variants"
+              ::key="variant.id"
+              @mouseover="changeImage(variant.image)"
+              class="color-circle"
+              :style="{backgroundColor: variant.color}"
+            ></div>
+            <button
+              class="button"
+              :class="{disabledButton : inStock < 1}"
+              v-on:click="addToCart"
+              :disabled="inStock < 1"
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>
@@ -32,11 +51,31 @@
       createApp({
         setup() {
           const message = ref("Hello Vue!");
+          const cart = ref(0);
+          const addToCart = () => {
+            cart.value += 1;
+          };
+          const image = ref("./assets/images/tShirtBlue.png");
+          const changeImage = (variantImage) => {
+            image.value = variantImage;
+          };
           return {
             message,
             product_title: ref("Skibidi"),
-            image: ref("./assets/images/tShirtBlue.png"),
+            image,
             inStock: ref(100),
+            details: ["50% Cotton", "30% Poyester", "20% Woll"],
+            variants: [
+              { id: 1, color: "blue", image: "./assets/images/tShirtBlue.png" },
+              {
+                id: 2,
+                color: "green",
+                image: "./assets/images/tShirtGreen.png",
+              },
+            ],
+            cart,
+            addToCart,
+            changeImage,
           };
         },
       }).mount("#app");
